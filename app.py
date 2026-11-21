@@ -47,11 +47,11 @@ ERROR_RESPONSE = (
 # Secrets
 # ---------------------------------------------------------------------------
 def load_api_key() -> Optional[str]:
-    key = os.environ.get("OPENAI_API_KEY")
+    key = os.environ.get("API_KEY")
     if key:
         return key
     try:
-        return st.secrets["OPENAI_API_KEY"]
+        return st.secrets["API_KEY"]
     except Exception:
         return None
 
@@ -63,7 +63,7 @@ if not OPENAI_API_KEY:
         "in your Render service settings and redeploy."
     )
     st.stop()
-os.environ["OPENAI_API_KEY"] = OPENAI_API_KEY
+os.environ["API_KEY"] = OPENAI_API_KEY
 
 if not os.path.exists(DB_PATH):
     st.error(f"Database file not found at {DB_PATH}. Make sure kartify.db is deployed next to app.py.")
