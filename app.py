@@ -23,7 +23,7 @@ st.set_page_config(
 
 # ── Load secrets ─────────────────────────────────────────────────────────────
 
-def load_api_key() -> Optional[str]:
+def load_api_key():
     key = os.environ.get("OPENAI_API_KEY")
     if key:
         return key
