@@ -13,7 +13,24 @@ from langgraph.graph import StateGraph, END
 from langchain_openai import ChatOpenAI
 from langchain_core.messages import HumanMessage, SystemMessage, AIMessage, ToolMessage
 from langchain_core.tools import tool
+# ---------------------------------------------------------------------------
+# Constants
+# ---------------------------------------------------------------------------
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+DB_PATH = os.path.join(BASE_DIR, "kartify.db")
 
+MAX_ATTEMPTS = 3          # total order_agent runs per turn (1 initial + 2 retries)
+PASS_THRESHOLD = 0.75     # groundedness and precision must both reach this
+RECURSION_LIMIT = 25      # worst case path uses ~13 steps
+HISTORY_WINDOW = 6        # past exchanges sent to the LLM
+
+FALLBACK_RESPONSE = (
+    "Sorry, I couldn't process that request right now. "
+    "Please try rephrasing your question."
+)
+ERROR_RESPONSE = (
+    "Sorry, something went wrong on our side. Please try again in a moment."
+)
 # ── Page config ──────────────────────────────────────────────────────────────
 st.set_page_config(
     page_title="Kartify Support",
