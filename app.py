@@ -23,7 +23,29 @@ st.set_page_config(
 
 # ── Load secrets ─────────────────────────────────────────────────────────────
 
+def load_api_key() -> Optional[str]:
+    key = os.environ.get("OPENAI_API_KEY")
+    if key:
+        return key
+    try:
+        return st.secrets["OPENAI_API_KEY"]
+    except Exception:
+        return None
 
+
+OPENAI_API_KEY = load_api_key()
+if not OPENAI_API_KEY:
+    st.error(
+        "OPENAI_API_KEY is not set. Add it as an environment variable "
+        "in your Render service settings and redeploy."
+    )
+    st.stop()
+os.environ["OPENAI_API_KEY"] = OPENAI_API_KEY
+
+if not os.path.exists(DB_PATH):
+    st.error(f"Database file not found at {DB_PATH}. Make sure kartify.db is deployed next to app.py.")
+    st.stop()
+    
 # ── LLMs ─────────────────────────────────────────────────────────────────────
 @st.cache_resource
 def load_llms():
